@@ -4,17 +4,18 @@ import styles from './styles';
 
 import iconDefault from '../../assets/default.png';
 
-export default function TaskCard() {
+export default function TaskCard({done}) {
    return(
-        <TouchableOpacity style={styles.Card}>
+        <TouchableOpacity style={[styles.card, done && styles.cardDone ]}>
             <View style={styles.cardLeft}>
-                <Image style={iconDefault} style={style.typeActive}/>
-                <Text style={style.cardTitle}>Fazer Relatório</Text>
+                <Image source={iconDefault} style={styles.typeActive} />
+                <Text style={styles.cardTitle}>Fazer tal coisa</Text>
             </View>
             <View style={styles.cardRight}>
-                <Text style={style.cardDate}>05/01/2021</Text>
-                <Text style={style.cardTime}>13:51</Text>
+                <Text style={styles.cardDate}>05/01/2021</Text>
+                <Text style={styles.cardTime}>13:51</Text>
             </View>
         </TouchableOpacity>
    ) 
 }
+
