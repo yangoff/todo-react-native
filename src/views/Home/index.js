@@ -14,10 +14,11 @@ export default function Home(){
     const [filter,setFilter] = useState('today');
     const [tasks,setTasks] = useState([]);
     const [load,setLoad] = useState(false);
+    const [lateCount,setLateCount] = useState();
 
     async function loadTasks() {
         setLoad(true)
-        await api.get('/task/filter/all/25:c1:75:e3:d3:1d')
+        await api.get(`/task/filter/${filter}/25:c1:75:e3:d3:1d`)
         .then(response=>{
             setTasks(response.data)
             setLoad(false);
@@ -25,14 +26,27 @@ export default function Home(){
         .catch();
     }
 
+    async function lateVerify() {
+        await api.get(`/task/filter/late/25:c1:75:e3:d3:1d`)
+        .then(response=>{
+            setLateCount(response.data.length)
+        })
+        .catch();
+    }
+
+    function Notification() {
+        setFilter('late');
+ }
+
     useEffect(()=>{
-        loadTasks();   
-    },[]);
+        loadTasks();
+        lateVerify();   
+    },[filter]);
 
     return(
 
         <View style={styles.container}>
-            <Header showNotification={true} showBack={false}/>
+            <Header showNotification={lateCount > 0 ? true : false} showBack={false} pressNotification={Notification} late={lateCount}/>
 
 
                 <View style={styles.filter}>
@@ -60,7 +74,7 @@ export default function Home(){
                 </View>
 
                 <View style={styles.title}>
-                    <Text style={styles.titleText}>TAREFAS</Text>
+                    <Text style={styles.titleText}>TAREFAS{ filter === 'late' && ' ATRASADAS'}</Text>
                 </View>
 
                 

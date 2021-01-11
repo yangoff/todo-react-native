@@ -10,7 +10,7 @@ import qrcode from '../../assets/qrcode.png';
 import back from '../../assets/back.png';
 
 
-export default function Header({showNotification, showBack}){
+export default function Header({showNotification, showBack, late, pressNotification}){
 
     return(
         <View style={styles.header}>
@@ -30,10 +30,10 @@ export default function Header({showNotification, showBack}){
 
                 {
                 showNotification &&
-                    <TouchableOpacity style={styles.notification}> 
+                    <TouchableOpacity style={styles.notification} onPress={pressNotification}> 
                         <Image source={bell} style={styles.notificationImage}/>
                         <View style={styles.circle}>
-                            <Text style={styles.notificationText}>3</Text>
+                            <Text style={styles.notificationText}>{late}</Text>
                         </View>
                     </TouchableOpacity>
                 }
