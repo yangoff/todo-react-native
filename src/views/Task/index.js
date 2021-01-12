@@ -6,6 +6,7 @@ import styles from './styles';
 import Header from "../../components/Header";
 import Footer from '../../components/Footer';
 // import TaskCard from '../../components/TaskCard';
+import DateTimePickerOS from "../../components/DateTimeInput/index.android";
 
 //ICONS
 import typeIcons from '../../utils/typeIcons';
@@ -38,7 +39,8 @@ export default function Task(){
 
                     <Text style={styles.label}>Detalhes</Text>
                     <TextInput style={styles.inputArea} multiline={true} maxLength={200} placeholder="Detalhes do lembrete"></TextInput>
-
+                    <DateTimePickerOS type={'date'}/>
+                    <DateTimePickerOS type={'time'}/>
                     <View style={styles.inLine}>
                         <View style={styles.inputInLine}>
                             <Switch onValueChange={()=> setDone(!done)} value={done} thumbColor={done ? '#00761b':'#ee6b26'}/>
@@ -52,6 +54,7 @@ export default function Task(){
 
                 <Footer icon={'save'}/>
         </KeyboardAvoidingView>
+        
         
     )
 
