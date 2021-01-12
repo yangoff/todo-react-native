@@ -14,11 +14,11 @@ import typeIcons from '../../utils/typeIcons';
 //API
 import  api  from "../../services/api";
 
-export default function Task(){
+export default function Task({navigation}){
     const [done,setDone] = useState(false)
     return(
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
-            <Header showBack={true}/>
+            <Header showBack={true} navigation={navigation}/>
                 <ScrollView style={{width:'100%'}}>
                     
                     <ScrollView horizontal={true} style={{marginVertical:10}} showsHorizontalScrollIndicator={false}>

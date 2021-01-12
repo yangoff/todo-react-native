@@ -10,7 +10,7 @@ import TaskCard from '../../components/TaskCard';
 //API
 import  api  from "../../services/api";
 
-export default function Home(){
+export default function Home({navigation}){
     const [filter,setFilter] = useState('today');
     const [tasks,setTasks] = useState([]);
     const [load,setLoad] = useState(false);
@@ -37,6 +37,9 @@ export default function Home(){
     function Notification() {
         setFilter('late');
  }
+    function New(){
+        navigation.navigate('Task');
+    }
 
     useEffect(()=>{
         loadTasks();
@@ -95,7 +98,7 @@ export default function Home(){
                 
 
 
-            <Footer icon={'add'}/>
+            <Footer icon={'add'} onPress={New}/>
         </View>
 
         
