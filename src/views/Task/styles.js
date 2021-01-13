@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         padding:10,
         marginBottom:50
+    },
+    typeIconInative:{
+        opacity:0.5
     }
     
 

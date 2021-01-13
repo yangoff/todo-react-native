@@ -7,7 +7,7 @@ import iconClock from '../../assets/clock.png'
 
 import styles from './styles'
 
-export default function DateTimePickerOS({type}) {
+export default function DateTimePickerOS({type,save}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dhSelected,setDHSelected] = useState();
 
@@ -29,8 +29,10 @@ export default function DateTimePickerOS({type}) {
   function saveData(date) {
       if(type === 'date'){
         setDHSelected(format(new Date(date),'dd-MM-yyyy'));
+        save(format(new Date(date),'yyyy-MM-dd'));
       }else{
         setDHSelected(format(new Date(date), 'HH:mm'));
+        save(format(new Date(date), 'HH:mm:ss'));
       }
   }
 
