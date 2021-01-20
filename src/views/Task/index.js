@@ -1,5 +1,5 @@
-import React, {useState,useEffect} from 'react';
-import { View,Text,ScrollView, Image,TextInput,KeyboardAvoidingView,TouchableOpacity,Switch, Alert } from 'react-native';
+import React, {useState,useEffect, useMemo} from 'react';
+import { View,Text,ScrollView, Image,TextInput,KeyboardAvoidingView,TouchableOpacity,Switch, Alert, ActivityIndicator } from 'react-native';
 import * as Network from 'expo-network';
 
 //Styles
@@ -25,6 +25,18 @@ export default function Task({navigation, idTask}){
     const [date,setDate] = useState();
     const [hour,setHour] = useState();
     const [macaddress,setMacaddress] = useState();
+    const [load,setLoad] = useState(true);
+
+
+    useEffect(()=>{
+        if(navigation.state.params){
+            setId(navigation.state.params.idTask);
+            loadTasks().then(()=>{
+                setLoad(false);
+            });
+        }
+        getMac();
+    },[id]);
 
     async function New() {
         
@@ -51,21 +63,36 @@ export default function Task({navigation, idTask}){
         });
 
     }
-    async function getMac() {
-        await Network.getMacAddressAsync()
-        .then(mac => {setMacaddress(mac)});
+    function getMac() {
+        Network.getMacAddressAsync()
+        .then(mac => {
+            setMacaddress(mac);
+            setLoad(false);
+        });
     }
 
-    useEffect(() =>{
-        if(navigation.state.params){
-            setId(navigation.state.params.idTask);
-        }
-        getMac();
-    })
+    async function loadTasks(){
+        await api.get(`task/${id}`)
+        .then(response =>{
+                setLoad(true);
+                setDone(response.data.done);
+                setType(response.data.type);
+                setTitle(response.data.title);
+                setDescription(response.data.description);
+                setDate(response.data.when);
+                setHour(response.data.when);
+        });
+    }
+
+    
 
     return(
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <Header showBack={true} navigation={navigation}/>
+                {
+                    load ?
+                <ActivityIndicator color='#EE6B26' size={50} />
+                    :
                 <ScrollView style={{width:'100%'}}>
                     
                     <ScrollView horizontal={true} style={{marginVertical:10}} showsHorizontalScrollIndicator={false}>
@@ -73,8 +100,8 @@ export default function Task({navigation, idTask}){
                         {
                             typeIcons.map((icon, index) =>(
                                 icon != null &&
-                        <TouchableOpacity onPress={()=> setType(index)}>
-                            <Image source={icon} style={[styles.imageIcon, type && type != index && styles.typeIconInative]}/>
+                        <TouchableOpacity key={index}  onPress={()=> setType(index)}>
+                            <Image  source={icon} style={[styles.imageIcon, type && type != index && styles.typeIconInative]}/>
                         </TouchableOpacity>
                         ))
                         }
@@ -102,6 +129,7 @@ export default function Task({navigation, idTask}){
                         </View> 
                      }      
                 </ScrollView>
+                }
 
                 <Footer icon={'save'} onPress={New}/>
         </KeyboardAvoidingView>
