@@ -52,8 +52,9 @@ export default function Task({navigation, idTask}){
         return Alert.alert('Defina a hora!');
 
         if (id) {
-            await api.post(`/${id}`,{
+            await api.put(`/task/${id}`,{
                 macaddress,
+                done,
                 type,
                 title,
                 description,
@@ -97,6 +98,28 @@ export default function Task({navigation, idTask}){
         });
     }
 
+    async function deleteTask(){
+        await api.delete(`/task/${id}`)
+        .then(()=> {
+            Alert.alert('Tarefa Deletada com sucesso');
+            navigation.navigate('Home')
+        })
+    }
+
+    async function remove(){
+        Alert.alert(
+            'Remover Tarefa',
+            'Deseja remover a tarefa?',
+            [
+                { text: 'Cancelar' },
+                { text: 'Confirmar', onPress: ()=> deleteTask() }
+            ],
+            { cancelable: true }
+
+        )
+
+    }
+
     
 
     return(
@@ -104,7 +127,7 @@ export default function Task({navigation, idTask}){
             <Header showBack={true} navigation={navigation}/>
                 {
                     load ?
-                <ActivityIndicator color='#EE6B26' size={50} />
+                <ActivityIndicator color='#EE6B26' size={50} style={{marginTop:150}}/>
                     :
                 <ScrollView style={{width:'100%'}}>
                     
@@ -136,7 +159,7 @@ export default function Task({navigation, idTask}){
                             <Switch onValueChange={()=> setDone(!done)} value={done} thumbColor={done ? '#00761b':'#ee6b26'}/>
                             <Text style={styles.switchLabel}>Concluído</Text>
                         </View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={remove}>
                                 <Text style={styles.removeLabel}>EXCLUIR</Text>
                             </TouchableOpacity>
                         </View> 

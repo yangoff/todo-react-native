@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
-import { Button, View,Text, TouchableOpacity, TextInput, Image } from "react-native";
+import { Button, View,Text, TouchableOpacity, TextInput, Image, Alert } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {format} from 'date-fns';
+import {format, isPast} from 'date-fns';
 import iconCalendar from '../../assets/calendar.png'
 import iconClock from '../../assets/clock.png'
 
@@ -13,9 +13,9 @@ export default function DateTimePickerOS({type,save, data, time}) {
 
   useEffect(()=>{
     if (data) {
-      setDHSelected(format(new Date(data),'dd-MM-yyyy'));
+      saveData(data);
     }else if(time){
-      setDHSelected(format(new Date(time), 'HH:mm'));
+      saveData(time);
     }
   },[])
 
@@ -29,8 +29,12 @@ export default function DateTimePickerOS({type,save, data, time}) {
 
   const handleConfirm = (date) => {
     // console.warn("A date has been picked: ", date);
-    saveData(date);
-    hideDatePicker();
+    if(isPast(new Date(date))){
+      Alert.alert('Tarefa não pode ser marcada para uma data passada!');
+    }else{
+      saveData(date);
+      hideDatePicker();
+    }
   };
 
   function saveData(date) {

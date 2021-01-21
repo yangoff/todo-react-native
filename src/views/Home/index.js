@@ -105,7 +105,7 @@ export default function Home({navigation}){
                         <ActivityIndicator color={'#EE6b26'} size={50}/>
                         :
                         tasks.map(t => (
-                        <TaskCard key={t._id} done={false} type={t.type} title={t.title} when={t.when} onPress={() => Show(t._id)}/>
+                        <TaskCard key={t._id} done={t.done} type={t.type} title={t.title} when={t.when} onPress={() => Show(t._id)}/>
                         ))
                     }
                 </ScrollView>
