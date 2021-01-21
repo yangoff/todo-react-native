@@ -38,7 +38,7 @@ export default function Task({navigation, idTask}){
         getMac();
     },[id]);
 
-    async function New() {
+    async function Save() {
         
         if(!title)
         return Alert.alert('Defina o Titulo!');
@@ -51,16 +51,29 @@ export default function Task({navigation, idTask}){
         if(!hour)
         return Alert.alert('Defina a hora!');
 
-        await api.post('/task',{
-            macaddress,
-            type,
-            title,
-            description,
-            when: `${date}T${hour}.000`
-        }).then(() => {
-            Alert.alert('Tarefa Cadastrada com sucesso');
-            navigation.navigate('Home');
-        });
+        if (id) {
+            await api.post(`/${id}`,{
+                macaddress,
+                type,
+                title,
+                description,
+                when: `${date}T${hour}.000`
+            }).then(() => {
+                Alert.alert('Tarefa editada com sucesso');
+                navigation.navigate('Home');
+            });   
+        }else{
+            await api.post('/task',{
+                macaddress,
+                type,
+                title,
+                description,
+                when: `${date}T${hour}.000`
+            }).then(() => {
+                Alert.alert('Tarefa Cadastrada com sucesso');
+                navigation.navigate('Home');
+            });
+        }
 
     }
     function getMac() {
@@ -114,8 +127,8 @@ export default function Task({navigation, idTask}){
                     <Text style={styles.label}>Detalhes</Text>
                     <TextInput style={styles.inputArea} multiline={true} maxLength={200} placeholder="Detalhes do lembrete" onChangeText={(text) => setDescription(text)} value={description}></TextInput>
                     
-                    <DateTimePickerOS type={'date'} save={setDate}/>
-                    <DateTimePickerOS type={'time'} save={setHour}/>
+                    <DateTimePickerOS type={'date'} save={setDate} data={date}/>
+                    <DateTimePickerOS type={'time'} save={setHour} time={hour}/>
 
                     {   id &&
                         <View style={styles.inLine}>
@@ -131,7 +144,7 @@ export default function Task({navigation, idTask}){
                 </ScrollView>
                 }
 
-                <Footer icon={'save'} onPress={New}/>
+                <Footer icon={'save'} onPress={Save}/>
         </KeyboardAvoidingView>
         
         

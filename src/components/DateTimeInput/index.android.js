@@ -7,10 +7,17 @@ import iconClock from '../../assets/clock.png'
 
 import styles from './styles'
 
-export default function DateTimePickerOS({type,save}) {
+export default function DateTimePickerOS({type,save, data, time}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dhSelected,setDHSelected] = useState();
 
+  useEffect(()=>{
+    if (data) {
+      setDHSelected(format(new Date(data),'dd-MM-yyyy'));
+    }else if(time){
+      setDHSelected(format(new Date(time), 'HH:mm'));
+    }
+  },[])
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -35,11 +42,6 @@ export default function DateTimePickerOS({type,save}) {
         save(format(new Date(date), 'HH:mm:ss'));
       }
   }
-
-
-
-
-
 
   return (
     <TouchableOpacity onPress={showDatePicker}>
