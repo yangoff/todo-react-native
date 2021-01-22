@@ -64,7 +64,7 @@ export default function Home({navigation}){
     return(
 
         <View style={styles.container}>
-            <Header showNotification={lateCount > 0 ? true : false} showBack={false} pressNotification={Notification} late={lateCount}/>
+            <Header showNotification={lateCount > 0 ? true : false} showBack={false} pressNotification={Notification} late={lateCount} navigation={navigation}/>
 
 
                 <View style={styles.filter}>

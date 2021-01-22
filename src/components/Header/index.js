@@ -15,6 +15,10 @@ export default function Header({showNotification, showBack, late, pressNotificat
         navigation.navigate('Home');
     }
 
+    function openQrcode(){
+        navigation.navigate('QrCode')
+    }
+
     return(
         <View style={styles.header}>
                 {
@@ -23,7 +27,7 @@ export default function Header({showNotification, showBack, late, pressNotificat
                             <Image source={back} style={styles.leftIconImage} />
                         </TouchableOpacity>
                     :
-                        <TouchableOpacity style={styles.leftIcon}>
+                        <TouchableOpacity style={styles.leftIcon} onPress={openQrcode}>
                             <Image source={qrcode} style={styles.leftIconImage} />
                         </TouchableOpacity>
                     
